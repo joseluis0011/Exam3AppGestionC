@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Exam3AppGestionC</string>
+
+    <!-- fragments-->
+    <string name="edit_contacts">Editar de contactos</string>
+    <string name="contacts"> contactos</string>
+    <string name="view_contacs_fragment"> ver contactos</string>
+</resources>
