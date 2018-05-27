@@ -20,6 +20,7 @@ import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -91,5 +92,22 @@ public class ContactListAdapter extends ArrayAdapter<Contactos> {
             }
         });
         return convertView;
+    }
+
+    // filtar contacto
+    public void filter(String characterText){
+        characterText=characterText.toLowerCase(Locale.getDefault());
+        nContactos.clear();
+        if (characterText.length()==0){
+            nContactos.addAll(arrayList);
+        }else {
+            nContactos.clear();
+            for (Contactos contactos: arrayList){
+                if (contactos.getNombre().toLowerCase(Locale.getDefault()).contains(characterText)){
+                    nContactos.add(contactos);
+                }
+            }
+        }
+        notifyDataSetChanged();
     }
 }

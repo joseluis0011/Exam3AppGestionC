@@ -5,4 +5,14 @@
     <string name="edit_contacts">Editar de contactos</string>
     <string name="contacts"> contactos</string>
     <string name="view_contacs_fragment"> ver contactos</string>
+
+    <string-array name="device_options">
+        <item>Mobile</item>
+        <item>Home</item>
+        <item>work</item>
+        <item>work fax</item>
+        <item>home fax</item>
+        <item>page</item>
+        <item>other</item> 
+    </string-array>
 </resources>

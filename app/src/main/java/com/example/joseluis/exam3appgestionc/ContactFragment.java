@@ -1,5 +1,6 @@
 package com.example.joseluis.exam3appgestionc;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -28,6 +29,11 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ContactFragment extends Fragment {
     private static final String TAG="ContactFragment";
+
+    public interface OnEditContactListener{
+        public void onEditcontactSlected(Contactos contact);
+    }
+    OnEditContactListener nOnEditContactListener;
     public ContactFragment(){
         super();
         setArguments(new Bundle());
@@ -36,7 +42,7 @@ public class ContactFragment extends Fragment {
     private Toolbar toolbar;
     private Contactos nContactos;
     private TextView mContactName;
-    private CircleImageView mContactImage;
+     CircleImageView mContactImage;
     private ListView mListView;
 
     @Override
@@ -70,6 +76,7 @@ public class ContactFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Log.d(TAG,"onClick: click the edit icon");
+                nOnEditContactListener.onEditcontactSlected(nContactos);
 
             }
         });
@@ -77,7 +84,7 @@ public class ContactFragment extends Fragment {
     }
     private void init(){
         mContactName.setText(nContactos.getNombre());
-        UniversalImageLoader.setImage(nContactos.getPerfil(),mContactImage,null,"https://");
+      //UniversalImageLoader.setImage(nContactos.getPerfil(),mContactImage,null,"http://");
 
         ArrayList<String>properties =new ArrayList<>();
         properties.add(nContactos.getNumero());
@@ -107,6 +114,16 @@ public class ContactFragment extends Fragment {
             return bundle.getParcelable(getString(R.string.contacts));
         }else{
             return null;
+        }
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try {
+            nOnEditContactListener=(OnEditContactListener) getActivity();
+        }catch (ClassCastException e){
+            Log.e(TAG,"onAttach: ClassCastException: "+ e.getMessage());
         }
     }
 }
