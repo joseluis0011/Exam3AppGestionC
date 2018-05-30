@@ -12,7 +12,7 @@ public class DBHelper extends SQLiteOpenHelper {
     private static final String TAG = "DatabaseHelper";
 
     private static final String DATABASE_NAME = "dbcontacto";
-    private static final String TABLE_NAME = "contacto";
+    public static final String TABLE_NAME = "contacto";
     public static final String COL0 = "ID";
     public static final String COL1 = "nombre";
     public static final String COL2 = "numero";
@@ -41,6 +41,11 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("DROP IF TABLE EXISTS " + TABLE_NAME);
         onCreate(db);
     }
+    /**
+     * Insert a new contact into the database
+     * @param contactos
+     * @return
+     */
     public boolean agregarContacto(Contactos contactos){
         SQLiteDatabase db =this.getWritableDatabase();
         ContentValues contentValues=new ContentValues();
@@ -56,8 +61,46 @@ public class DBHelper extends SQLiteOpenHelper {
             return true;
         }
     }
-   // public Cursor getAllContac(){
-      //  SQLiteDatabase db = this.getWritableDatabase();
-      ///  return db.rawQuery("SELECT * FROM " + TABLE_NAME,null);
-   // }
+    /**
+     * Retrieve all contacts from database
+     * @return
+     */
+    public Cursor getAllContacts(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        return db.rawQuery("SELECT * FROM " + TABLE_NAME, null);
+    }
+    public boolean updateContact(Contactos contact, int id){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(COL1, contact.getNombre());
+        contentValues.put(COL2, contact.getNumero());
+        contentValues.put(COL3, contact.getEmail());
+        contentValues.put(COL4, contact.getPerfil());
+
+        int update = db.update(TABLE_NAME, contentValues, COL0 + " = ? ", new String[] {String.valueOf(id)} );
+
+        if(update != 1) {
+            return false;
+        }
+        else{
+            return true;
+        }
+    }
+    /**
+     * Retrieve the contact unique id from the database using @param
+     * @param contact
+     * @return
+     */
+    public Cursor getContactID(Contactos contact){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String sql = "SELECT * FROM " + TABLE_NAME  +
+                " WHERE " + COL1 + " = '" + contact.getNombre() + "'" +
+                " AND " + COL2 + " = '" + contact.getNumero() + "'";
+        return db.rawQuery(sql, null);
+    }
+
+    public Integer deleteContact(int id){
+        SQLiteDatabase db = this.getWritableDatabase();
+        return db.delete(TABLE_NAME, "ID = ?", new String[] {String.valueOf(id)});
+    }
 }

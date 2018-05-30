@@ -13,7 +13,7 @@ import com.example.joseluis.exam3appgestionc.Utils.UniversalImageLoader;
 import com.example.joseluis.exam3appgestionc.models.Contactos;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
-public class MainActivity extends AppCompatActivity implements viewContactsFragment.OnContactSelecedListerner, ContactFragment.OnEditContactListener{
+public class MainActivity extends AppCompatActivity implements verContactosFragment.OnContactSelecedListerner, ContactoFragment.OnEditContactListener,verContactosFragment.OnAddContactListener{
     private static final String TAG="MainActivity";
    private static final int REQUEST_CODE=1;
     @Override
@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity implements viewContactsFragm
         init();
     }
     private void init(){
-        viewContactsFragment fragment =new viewContactsFragment();
+        verContactosFragment fragment =new verContactosFragment();
         FragmentTransaction transaction =getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment_container,fragment);
         transaction.addToBackStack(null);
@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity implements viewContactsFragm
     @Override
     public void OnContactSelected(Contactos con) {
         Log.d(TAG,"OnContactSelected: contact select from"+getString(R.string.view_contacs_fragment)+" "+con.getNombre());
-        ContactFragment fragment=new ContactFragment();
+        ContactoFragment fragment=new ContactoFragment();
         Bundle args =new Bundle();
         args.putParcelable(getString(R.string.contacts),con);
         fragment.setArguments(args);
@@ -94,13 +94,24 @@ public class MainActivity extends AppCompatActivity implements viewContactsFragm
     @Override
     public void onEditcontactSlected(Contactos contact) {
         Log.d(TAG,"OnContactSelected: contact select from"+getString(R.string.view_contacs_fragment)+" "+contact.getNombre());
-        EditContactFragment fragment=new EditContactFragment();
+        EditContactoFragment fragment=new EditContactoFragment();
         Bundle args =new Bundle();
         args.putParcelable(getString(R.string.edit_contacts),contact);
         fragment.setArguments(args);
         FragmentTransaction transaction=getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment_container,fragment);
         transaction.addToBackStack(getString(R.string.edit_contacts));
+        transaction.commit();
+    }
+
+    @Override
+    public void onAddContact() {
+        Log.d(TAG, "onAddContact: navigating to " + getString(R.string.add_contact_fragment));
+
+        AgregarContactoFragment fragment = new AgregarContactoFragment();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_container, fragment);
+        transaction.addToBackStack(getString(R.string.add_contact_fragment));
         transaction.commit();
     }
 }

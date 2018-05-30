@@ -10,10 +10,10 @@ import android.view.ViewGroup;
 import com.example.joseluis.exam3appgestionc.models.Contactos;
 
 
-public class EditContactFragment extends Fragment {
-    private static final String TAG="EditContactFragment";
+public class EditContactoFragment extends Fragment {
+    private static final String TAG="EditContactoFragment";
 
-    public EditContactFragment(){
+    public EditContactoFragment(){
         super();
         setArguments(new Bundle());
     }
@@ -22,7 +22,7 @@ public class EditContactFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
-        View view =inflater.inflate(R.layout.fragment_editcontact,container,false);
+        View view =inflater.inflate(R.layout.fragment_addcontact,container,false);
         Log.d(TAG,"onCreate: started");
         getContactFromBundle();
         return view;

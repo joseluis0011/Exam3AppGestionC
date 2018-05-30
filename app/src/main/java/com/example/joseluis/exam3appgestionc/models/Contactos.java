@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class Contactos implements Parcelable{
+    public Integer id;
     private String nombre;
     private String numero;
     private String email;
@@ -44,6 +45,14 @@ public class Contactos implements Parcelable{
                 ", email='" + email + '\'' +
                 ", perfil='" + perfil + '\'' +
                 '}';
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getNombre() {

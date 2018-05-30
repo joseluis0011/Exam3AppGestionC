@@ -1,6 +1,7 @@
 package com.example.joseluis.exam3appgestionc;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -17,9 +18,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.joseluis.exam3appgestionc.Utils.ContactPropertyListAdapter;
 import com.example.joseluis.exam3appgestionc.Utils.UniversalImageLoader;
+import com.example.joseluis.exam3appgestionc.dao.DBHelper;
 import com.example.joseluis.exam3appgestionc.models.Contactos;
 
 import java.util.ArrayList;
@@ -27,14 +30,14 @@ import java.util.ArrayList;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 
-public class ContactFragment extends Fragment {
-    private static final String TAG="ContactFragment";
+public class ContactoFragment extends Fragment {
+    private static final String TAG="ContactoFragment";
 
     public interface OnEditContactListener{
         public void onEditcontactSlected(Contactos contact);
     }
     OnEditContactListener nOnEditContactListener;
-    public ContactFragment(){
+    public ContactoFragment(){
         super();
         setArguments(new Bundle());
     }
@@ -84,7 +87,7 @@ public class ContactFragment extends Fragment {
     }
     private void init(){
         mContactName.setText(nContactos.getNombre());
-      //UniversalImageLoader.setImage(nContactos.getPerfil(),mContactImage,null,"http://");
+//      UniversalImageLoader.setImage(nContactos.getPerfil(),mContactImage,null,"http://");
 
         ArrayList<String>properties =new ArrayList<>();
         properties.add(nContactos.getNumero());
@@ -98,15 +101,40 @@ public class ContactFragment extends Fragment {
         inflater.inflate(R.menu.contact_menu,menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
-
-    @Override
+    // eliminar contacto
+     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.menuitem_delete:
-                Log.d(TAG,"onOptionsItemSelected: deliting contact");
+                Log.d(TAG, "onOptionsItemSelected: deleting contact.");
+                DBHelper databaseHelper = new DBHelper(getActivity());
+                Cursor cursor = databaseHelper.getContactID(nContactos);
+
+                int contactID = -1;
+                while(cursor.moveToNext()){
+                    contactID = cursor.getInt(0);
+                }
+                if(contactID > -1){
+                    if(databaseHelper.deleteContact(contactID) > 0){
+                        Toast.makeText(getActivity(), "Contacto Eliminado", Toast.LENGTH_SHORT).show();
+
+                        //clear the arguments ont he current bundle since the contact is deleted
+                        this.getArguments().clear();
+
+                        //remove previous fragemnt from the backstack (therefore navigating back)
+                        getActivity().getSupportFragmentManager().popBackStack();
+                    }
+                    else{
+                        Toast.makeText(getActivity(), " Error", Toast.LENGTH_SHORT).show();
+                    }
+                }
         }
         return super.onOptionsItemSelected(item);
-    }
+        }
+    /**
+     * Retrieves the selected contact from the bundle (coming from MainActivity)
+     * @return
+     */
     private Contactos getContactFromBundle(){
         Log.d(TAG,"getContactFromBundle: argukment"+ getArguments());
         Bundle bundle=this.getArguments();

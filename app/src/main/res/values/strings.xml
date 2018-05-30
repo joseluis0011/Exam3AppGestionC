@@ -5,6 +5,9 @@
     <string name="edit_contacts">Editar de contactos</string>
     <string name="contacts"> contactos</string>
     <string name="view_contacs_fragment"> ver contactos</string>
+    <string name="add_contact">Add Contact</string>
+    <string name="change_photo_dialog">ChangePhotoDialog</string>
+    <string name="add_contact_fragment">AddContactFragment</string>
 
     <string-array name="device_options">
         <item>Mobile</item>
